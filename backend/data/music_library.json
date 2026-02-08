@@ -1,0 +1,197 @@
+{
+  "vibehorn_lofi_background": {
+    "file": "vibehorn-lofi-background-music-479217.mp3",
+    "features": {
+      "tempo": 80,
+      "tempo_range": [72, 90],
+      "mood": "calm",
+      "energy": 0.25,
+      "brightness": 0.4,
+      "duration": 120
+    },
+    "instruments": ["piano", "soft percussion", "ambient pad"],
+    "material_affinity": ["ceramic", "wood", "organic"],
+    "tags": ["lofi", "piano", "calm", "background", "peaceful", "study"],
+    "description": "Gentle lo-fi background music with warm piano tones for quiet moments"
+  },
+  "snoozybeats_honey_chill": {
+    "file": "snoozybeats-honey-chill-lofi-309227.mp3",
+    "features": {
+      "tempo": 85,
+      "tempo_range": [78, 95],
+      "mood": "calm",
+      "energy": 0.3,
+      "brightness": 0.45,
+      "duration": 160
+    },
+    "instruments": ["piano", "vinyl crackle", "soft drums"],
+    "material_affinity": ["ceramic", "wood", "fabric"],
+    "tags": ["lofi", "chill", "honey", "warm", "coffee", "morning"],
+    "description": "Sweet honey-toned lo-fi with chill vibes for cozy morning scenes"
+  },
+  "snoozybeats_lofi_piano": {
+    "file": "snoozybeats-lofi-piano-beat-305563.mp3",
+    "features": {
+      "tempo": 90,
+      "tempo_range": [82, 100],
+      "mood": "focused",
+      "energy": 0.4,
+      "brightness": 0.5,
+      "duration": 180
+    },
+    "instruments": ["piano", "light drums", "bass"],
+    "material_affinity": ["wood", "ceramic", "metal"],
+    "tags": ["lofi", "piano", "beat", "focused", "work", "productive"],
+    "description": "Steady lo-fi piano beat with clear rhythm for focused work sessions"
+  },
+  "retrositive_lofi_love_letters": {
+    "file": "retrositive-lofi-love-letters-188887.mp3",
+    "features": {
+      "tempo": 78,
+      "tempo_range": [70, 88],
+      "mood": "melancholic",
+      "energy": 0.2,
+      "brightness": 0.35,
+      "duration": 200
+    },
+    "instruments": ["piano", "strings", "vinyl texture"],
+    "material_affinity": ["fabric", "glass", "ceramic"],
+    "tags": ["lofi", "romantic", "melancholic", "letters", "dreamy", "nostalgic"],
+    "description": "Nostalgic lo-fi with romantic piano melodies evoking love letters"
+  },
+  "xethrocc_forest_guitar": {
+    "file": "xethrocc-forest-guitar-lofi-161108.mp3",
+    "features": {
+      "tempo": 82,
+      "tempo_range": [75, 92],
+      "mood": "calm",
+      "energy": 0.35,
+      "brightness": 0.5,
+      "duration": 230
+    },
+    "instruments": ["acoustic guitar", "nature sounds", "soft percussion"],
+    "material_affinity": ["wood", "organic", "fabric"],
+    "tags": ["lofi", "guitar", "forest", "nature", "acoustic", "outdoor"],
+    "description": "Forest-inspired lo-fi with acoustic guitar and nature ambience"
+  },
+  "xethrocc_garden_vibes": {
+    "file": "xethrocc-garden-vibes-lofi-160144.mp3",
+    "features": {
+      "tempo": 88,
+      "tempo_range": [80, 98],
+      "mood": "calm",
+      "energy": 0.35,
+      "brightness": 0.55,
+      "duration": 190
+    },
+    "instruments": ["acoustic guitar", "piano", "birds", "light shaker"],
+    "material_affinity": ["wood", "organic", "ceramic"],
+    "tags": ["lofi", "garden", "vibes", "sunny", "relaxed", "nature"],
+    "description": "Garden-inspired lo-fi with warm guitar and piano for sunny afternoons"
+  },
+  "cfl_celestial_circuitry": {
+    "file": "cfl_turningpages-celestial-circuitry-386731.mp3",
+    "features": {
+      "tempo": 110,
+      "tempo_range": [100, 120],
+      "mood": "focused",
+      "energy": 0.55,
+      "brightness": 0.7,
+      "duration": 168
+    },
+    "instruments": ["synth pad", "electronic arpeggios", "ambient textures"],
+    "material_affinity": ["metal", "glass", "plastic"],
+    "tags": ["electronic", "ambient", "celestial", "tech", "futuristic", "focused"],
+    "description": "Celestial electronic soundscape with synth arpeggios for tech environments"
+  },
+  "senormusica_ambient_calm_v2": {
+    "file": "senormusica81-ambient-calm-v2-456853.mp3",
+    "features": {
+      "tempo": 70,
+      "tempo_range": [62, 80],
+      "mood": "contemplative",
+      "energy": 0.2,
+      "brightness": 0.3,
+      "duration": 170
+    },
+    "instruments": ["ambient pad", "soft piano", "field recordings"],
+    "material_affinity": ["glass", "fabric", "ceramic"],
+    "tags": ["ambient", "calm", "contemplative", "meditation", "peaceful", "introspective"],
+    "description": "Deep ambient calm with soft textures for contemplation and meditation"
+  },
+  "senormusica_ambient_calm_v21": {
+    "file": "senormusica81-ambient-calm-v21-456856.mp3",
+    "features": {
+      "tempo": 72,
+      "tempo_range": [64, 82],
+      "mood": "contemplative",
+      "energy": 0.22,
+      "brightness": 0.32,
+      "duration": 195
+    },
+    "instruments": ["ambient pad", "gentle piano", "nature textures"],
+    "material_affinity": ["glass", "fabric", "organic"],
+    "tags": ["ambient", "calm", "serene", "gentle", "peaceful", "relaxation"],
+    "description": "Serene ambient atmosphere with gentle piano for deep relaxation"
+  },
+  "kaazoom_jazz_at_dawn": {
+    "file": "kaazoom-jazz-at-dawn-full-version-smooth-lounge-jazz-414150.mp3",
+    "features": {
+      "tempo": 105,
+      "tempo_range": [95, 115],
+      "mood": "calm",
+      "energy": 0.45,
+      "brightness": 0.6,
+      "duration": 240
+    },
+    "instruments": ["saxophone", "piano", "upright bass", "brushed drums"],
+    "material_affinity": ["wood", "metal", "ceramic"],
+    "tags": ["jazz", "lounge", "smooth", "dawn", "sophisticated", "warm"],
+    "description": "Smooth lounge jazz with saxophone and piano for sophisticated morning scenes"
+  },
+  "synclabmusic_smooth_jazz": {
+    "file": "synclabmusic-smooth-jazz-371925.mp3",
+    "features": {
+      "tempo": 100,
+      "tempo_range": [90, 112],
+      "mood": "calm",
+      "energy": 0.45,
+      "brightness": 0.55,
+      "duration": 185
+    },
+    "instruments": ["saxophone", "electric piano", "bass guitar", "light drums"],
+    "material_affinity": ["metal", "wood", "ceramic"],
+    "tags": ["jazz", "smooth", "saxophone", "elegant", "cafe", "evening"],
+    "description": "Elegant smooth jazz with saxophone for cafe and evening ambience"
+  },
+  "ashot_uplifting_acoustic": {
+    "file": "ashot_danielyan-uplifting-upbeat-acoustic-guitar-237893.mp3",
+    "features": {
+      "tempo": 120,
+      "tempo_range": [112, 130],
+      "mood": "excited",
+      "energy": 0.75,
+      "brightness": 0.7,
+      "duration": 189
+    },
+    "instruments": ["acoustic guitar", "claps", "tambourine", "ukulele"],
+    "material_affinity": ["wood", "organic", "fabric"],
+    "tags": ["upbeat", "acoustic", "uplifting", "happy", "guitar", "positive"],
+    "description": "Uplifting acoustic guitar track with joyful energy for happy moments"
+  },
+  "u968_upbeat_emotive": {
+    "file": "u_968xy4i23x-upbeat-emotive-186467.mp3",
+    "features": {
+      "tempo": 128,
+      "tempo_range": [120, 138],
+      "mood": "excited",
+      "energy": 0.8,
+      "brightness": 0.75,
+      "duration": 252
+    },
+    "instruments": ["electric guitar", "drums", "synth", "strings"],
+    "material_affinity": ["metal", "plastic", "glass"],
+    "tags": ["upbeat", "emotive", "energetic", "cinematic", "inspiring", "powerful"],
+    "description": "Powerful emotive track with cinematic energy for inspiring moments"
+  }
+}

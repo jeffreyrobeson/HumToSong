@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+/* Cyberpunk Lo-fi theme */
+@theme {
+	--color-bg-dark: #0a0a0a;
+	--color-bg-card: #1a1a1a;
+	--color-bg-elevated: #2a2a2a;
+	--color-neon-cyan: #00ffff;
+	--color-neon-magenta: #ff00ff;
+	--color-neon-yellow: #ffff00;
+	--color-success: #00ff88;
+	--color-warning: #ffb800;
+	--color-error: #ff3366;
+	--color-text-dim: #666666;
+}
+
+body {
+	margin: 0;
+	background-color: var(--color-bg-dark);
+	color: white;
+	font-family: "Inter", "SF Pro", -apple-system, sans-serif;
+	min-height: 100dvh;
+}
+
+#root {
+	min-height: 100dvh;
+}
