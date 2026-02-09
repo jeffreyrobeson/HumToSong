@@ -25,3 +25,35 @@ body {
 #root {
 	min-height: 100dvh;
 }
+
+/* Gesture particle animations */
+@keyframes riseAndFade {
+	from {
+		transform: translate(-50%, -50%) scale(1);
+		opacity: 1;
+	}
+	to {
+		transform: translate(-50%, -150px) scale(0.2);
+		opacity: 0;
+	}
+}
+
+@keyframes pulseRing {
+	from {
+		transform: scale(0.5);
+		opacity: 1;
+		border-width: 4px;
+	}
+	to {
+		transform: scale(2.5);
+		opacity: 0;
+		border-width: 0;
+	}
+}
+
+@keyframes fadeTrail {
+	to {
+		opacity: 0;
+		transform: translate(-50%, -50%) scale(0.2);
+	}
+}

@@ -193,5 +193,185 @@
     "material_affinity": ["metal", "plastic", "glass"],
     "tags": ["upbeat", "emotive", "energetic", "cinematic", "inspiring", "powerful"],
     "description": "Powerful emotive track with cinematic energy for inspiring moments"
+  },
+  "mixkit_cyberpunk_city": {
+    "file": "mixkit-cyberpunk-city-140.mp3",
+    "features": {
+      "tempo": 100,
+      "tempo_range": [92, 110],
+      "mood": "anxious",
+      "energy": 0.55,
+      "brightness": 0.35,
+      "duration": 100
+    },
+    "instruments": ["synth", "bass", "glitch effects", "dark pad"],
+    "material_affinity": ["metal", "glass", "plastic"],
+    "tags": ["cyberpunk", "dark", "tense", "urban", "electronic", "anxious"],
+    "description": "Dark cyberpunk electronic soundscape evoking tense urban atmospheres"
+  },
+  "mixkit_sci_fi_score": {
+    "file": "mixkit-sci-fi-score-464.mp3",
+    "features": {
+      "tempo": 95,
+      "tempo_range": [88, 105],
+      "mood": "anxious",
+      "energy": 0.5,
+      "brightness": 0.3,
+      "duration": 97
+    },
+    "instruments": ["synth", "strings", "electronic effects", "tension risers"],
+    "material_affinity": ["metal", "plastic", "glass"],
+    "tags": ["sci-fi", "tense", "suspenseful", "dark", "electronic", "anxious"],
+    "description": "Suspenseful sci-fi score with tension risers for uneasy moments"
+  },
+  "mixkit_valley_sunset": {
+    "file": "mixkit-valley-sunset-127.mp3",
+    "features": {
+      "tempo": 75,
+      "tempo_range": [68, 84],
+      "mood": "neutral",
+      "energy": 0.3,
+      "brightness": 0.5,
+      "duration": 134
+    },
+    "instruments": ["ambient pad", "soft guitar", "light chimes"],
+    "material_affinity": ["organic", "wood", "ceramic"],
+    "tags": ["ambient", "neutral", "sunset", "gentle", "background", "easy"],
+    "description": "Gentle ambient sunset piece with warm tones for everyday moments"
+  },
+  "mixkit_forest_treasure": {
+    "file": "mixkit-forest-treasure-138.mp3",
+    "features": {
+      "tempo": 80,
+      "tempo_range": [72, 90],
+      "mood": "neutral",
+      "energy": 0.3,
+      "brightness": 0.55,
+      "duration": 104
+    },
+    "instruments": ["ambient pad", "nature sounds", "light percussion"],
+    "material_affinity": ["wood", "organic", "ceramic"],
+    "tags": ["ambient", "forest", "nature", "neutral", "discovery", "background"],
+    "description": "Nature-inspired ambient piece with forest sounds for neutral backgrounds"
+  },
+  "mixkit_hip_hop_02": {
+    "file": "mixkit-hip-hop-02-738.mp3",
+    "features": {
+      "tempo": 95,
+      "tempo_range": [88, 105],
+      "mood": "neutral",
+      "energy": 0.55,
+      "brightness": 0.5,
+      "duration": 115
+    },
+    "instruments": ["drums", "bass", "synth", "hi-hat"],
+    "material_affinity": ["plastic", "metal", "glass"],
+    "tags": ["hip-hop", "beat", "urban", "neutral", "groove", "street"],
+    "description": "Clean hip-hop beat with urban groove for street and city scenes"
+  },
+  "mixkit_complicated": {
+    "file": "mixkit-complicated-281.mp3",
+    "features": {
+      "tempo": 85,
+      "tempo_range": [78, 95],
+      "mood": "melancholic",
+      "energy": 0.45,
+      "brightness": 0.35,
+      "duration": 109
+    },
+    "instruments": ["piano", "drums", "bass", "ambient pad"],
+    "material_affinity": ["glass", "metal", "fabric"],
+    "tags": ["hip-hop", "moody", "melancholic", "dark", "introspective", "urban"],
+    "description": "Moody hip-hop with piano and dark atmosphere for introspective moments"
+  },
+  "mixkit_rnb": {
+    "file": "mixkit-rnb-224.mp3",
+    "features": {
+      "tempo": 90,
+      "tempo_range": [82, 100],
+      "mood": "calm",
+      "energy": 0.5,
+      "brightness": 0.55,
+      "duration": 115
+    },
+    "instruments": ["electric piano", "bass", "drums", "vocal chops"],
+    "material_affinity": ["fabric", "glass", "ceramic"],
+    "tags": ["rnb", "smooth", "groovy", "warm", "soulful", "evening"],
+    "description": "Smooth R&B groove with warm electric piano for soulful evening vibes"
+  },
+  "mixkit_rnb_vibes": {
+    "file": "mixkit-rnb-vibes-685.mp3",
+    "features": {
+      "tempo": 88,
+      "tempo_range": [80, 98],
+      "mood": "calm",
+      "energy": 0.45,
+      "brightness": 0.5,
+      "duration": 181
+    },
+    "instruments": ["synth", "bass", "soft drums", "vocal effects"],
+    "material_affinity": ["fabric", "glass", "ceramic"],
+    "tags": ["rnb", "vibes", "smooth", "chill", "soulful", "relaxed"],
+    "description": "Chill R&B vibes with smooth synth textures for relaxed soulful moments"
+  },
+  "mixkit_drum_and_bass_vibes": {
+    "file": "mixkit-drum-and-bass-vibes-719.mp3",
+    "features": {
+      "tempo": 170,
+      "tempo_range": [160, 180],
+      "mood": "excited",
+      "energy": 0.85,
+      "brightness": 0.65,
+      "duration": 96
+    },
+    "instruments": ["drums", "bass", "synth", "hi-hat"],
+    "material_affinity": ["metal", "plastic", "glass"],
+    "tags": ["drum-and-bass", "energetic", "fast", "electronic", "intense", "dance"],
+    "description": "High-energy drum and bass with intense rhythms for peak excitement"
+  },
+  "mixkit_skyline": {
+    "file": "mixkit-skyline-601.mp3",
+    "features": {
+      "tempo": 70,
+      "tempo_range": [62, 80],
+      "mood": "contemplative",
+      "energy": 0.35,
+      "brightness": 0.55,
+      "duration": 206
+    },
+    "instruments": ["strings", "piano", "orchestra"],
+    "material_affinity": ["glass", "ceramic", "fabric"],
+    "tags": ["classical", "orchestral", "cinematic", "majestic", "contemplative", "epic"],
+    "description": "Cinematic orchestral piece with sweeping strings for majestic skyline views"
+  },
+  "mixkit_cristales": {
+    "file": "mixkit-cristales-577.mp3",
+    "features": {
+      "tempo": 65,
+      "tempo_range": [58, 75],
+      "mood": "contemplative",
+      "energy": 0.15,
+      "brightness": 0.45,
+      "duration": 298
+    },
+    "instruments": ["piano", "crystal bells", "ambient textures"],
+    "material_affinity": ["glass", "ceramic", "organic"],
+    "tags": ["classical", "piano", "crystal", "delicate", "serene", "meditative"],
+    "description": "Delicate classical piano with crystal bell textures for serene meditation"
+  },
+  "mixkit_kodama_night_town": {
+    "file": "mixkit-kodama-night-town-114.mp3",
+    "features": {
+      "tempo": 100,
+      "tempo_range": [92, 110],
+      "mood": "focused",
+      "energy": 0.5,
+      "brightness": 0.5,
+      "duration": 185
+    },
+    "instruments": ["synth", "traditional instruments", "electronic beats", "ambient"],
+    "material_affinity": ["wood", "organic", "ceramic"],
+    "tags": ["world", "japanese", "electronic", "night", "urban", "atmospheric"],
+    "description": "Atmospheric night-town electronic with Japanese-inspired textures"
   }
 }

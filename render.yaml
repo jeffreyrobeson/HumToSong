@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: lll-app
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: MUSIC_BASE_URL
+        value: /music
+      - key: PORT
+        value: "8000"
+    plan: free
