@@ -1,7 +1,7 @@
 # LLL — Life Live Loop
 
 > AI-powered music creation app: take a photo, tap an emotion, and let the music find you.
-
+人工智能音乐创作应用：拍张照片，选择一种情绪，让音乐找到你。
 ---
 
 ## Overview
