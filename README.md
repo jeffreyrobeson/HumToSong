@@ -7,7 +7,7 @@
 ## Overview
 
 LLL turns everyday moments into music. Snap a photo, identify objects in the scene, express how you feel — and the AI matches you with a song. Your matched tracks collect into a personal card gallery you can browse entirely **hands-free** using real-time gesture control.
-
+LLL 将日常瞬间转化为音乐。拍张照片，识别场景中的物体，表达你的感受——人工智能就会为你匹配一首歌曲。匹配到的曲目会收集到一个个人卡片库中，你可以使用实时手势控制完全解放双手地浏览它们。
 ---
 
 ## ✋ Gesture Control — Hands-Free Music Navigation
