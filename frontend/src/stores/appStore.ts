@@ -2,7 +2,13 @@ import { create } from "zustand";
 import type { EmotionData, IdentifiedObject, MatchResult, MusicDescription } from "../lib/api";
 import type { Layer } from "../lib/collaboration";
 
+const PROVIDER_KEY = "lll-provider";
+
 interface AppState {
+	// AI 供应商选择（localStorage 持久化）：为 null 时后端走默认 Gemini
+	providerId: string | null;
+	setProviderId: (id: string | null) => void;
+
 	// Camera -> Identify
 	capturedImage: string | null;
 	objects: IdentifiedObject[];
@@ -43,6 +49,23 @@ interface AppState {
 }
 
 export const useAppStore = create<AppState>((set) => ({
+	providerId: (() => {
+		try {
+			return localStorage.getItem(PROVIDER_KEY);
+		} catch {
+			return null;
+		}
+	})(),
+	setProviderId: (id) => {
+		try {
+			if (id) localStorage.setItem(PROVIDER_KEY, id);
+			else localStorage.removeItem(PROVIDER_KEY);
+		} catch {
+			/* private mode */
+		}
+		set({ providerId: id });
+	},
+
 	capturedImage: null,
 	objects: [],
 	setCapturedImage: (image) => set({ capturedImage: image }),

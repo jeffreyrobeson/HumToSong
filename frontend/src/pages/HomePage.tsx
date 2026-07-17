@@ -2,11 +2,13 @@ import { motion } from "framer-motion";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { identifyObjects } from "../lib/api";
+import { useI18n } from "../lib/i18n";
 import { useAppStore } from "../stores/appStore";
 
 export default function HomePage() {
 	const navigate = useNavigate();
-	const { resetAll, setCapturedImage, setObjects, setLoading, isLoading } = useAppStore();
+	const { resetAll, setCapturedImage, setObjects, setLoading, isLoading, providerId } = useAppStore();
+	const { t } = useI18n();
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const [error, setError] = useState<string | null>(null);
 
@@ -36,11 +38,11 @@ export default function HomePage() {
 			const base64 = dataUrl.split(",")[1];
 
 			setCapturedImage(dataUrl);
-			const objects = await identifyObjects(base64);
+			const objects = await identifyObjects(base64, t("common.identifyError"), providerId ?? undefined);
 			setObjects(objects);
 			navigate("/play");
 		} catch (err) {
-			setError(err instanceof Error ? err.message : "Failed to identify objects");
+			setError(err instanceof Error && err.message === "timeout" ? t("common.timeout") : (err instanceof Error ? err.message : t("home.failedIdentify")));
 		} finally {
 			setLoading(false);
 		}
@@ -54,13 +56,13 @@ export default function HomePage() {
 				transition={{ duration: 0.6 }}
 				className="text-center"
 			>
-				<h1 className="mb-2 text-5xl font-bold tracking-tight">
-					<span className="text-neon-cyan">L</span>
-					<span className="text-neon-magenta">L</span>
-					<span className="text-neon-yellow">L</span>
+				<h1 className="mb-2 text-3xl font-bold tracking-tight">
+					<span className="text-neon-cyan">图</span>
+					<span className="text-neon-magenta">歌</span>
+					<span className="text-neon-yellow"> 画中有音</span>
 				</h1>
-				<p className="mb-1 text-lg text-white/60">Life Live Loop</p>
-				<p className="mb-12 text-sm text-white/40 italic">Turn the World into Your Music Studio</p>
+				<p className="mb-1 text-lg text-white/60">{t("app.tagline")}</p>
+				<p className="mb-12 text-sm text-white/40 italic">{t("app.subtitle")}</p>
 
 				{error && <p className="mb-4 text-sm text-error">{error}</p>}
 
@@ -73,7 +75,7 @@ export default function HomePage() {
 						disabled={isLoading}
 						className="rounded-xl bg-neon-cyan/10 px-10 py-4 text-lg font-semibold text-neon-cyan ring-1 ring-neon-cyan/30 transition-all hover:bg-neon-cyan/20 hover:ring-neon-cyan/60 disabled:opacity-50"
 					>
-						Start Creating
+						{t("home.start")}
 					</motion.button>
 
 					<motion.button
@@ -84,7 +86,7 @@ export default function HomePage() {
 						disabled={isLoading}
 						className="rounded-xl bg-neon-yellow/10 px-10 py-4 text-lg font-semibold text-neon-yellow ring-1 ring-neon-yellow/30 transition-all hover:bg-neon-yellow/20 hover:ring-neon-yellow/60 disabled:opacity-50"
 					>
-						{isLoading ? "Identifying..." : "Import Photo"}
+						{isLoading ? t("home.identifying") : t("home.import")}
 					</motion.button>
 
 					<motion.button
@@ -95,7 +97,7 @@ export default function HomePage() {
 						disabled={isLoading}
 						className="rounded-xl bg-neon-magenta/10 px-10 py-4 text-lg font-semibold text-neon-magenta ring-1 ring-neon-magenta/30 transition-all hover:bg-neon-magenta/20 hover:ring-neon-magenta/60 disabled:opacity-50"
 					>
-						Join Session
+						{t("home.join")}
 					</motion.button>
 				</div>
 
@@ -104,7 +106,7 @@ export default function HomePage() {
 					onClick={() => navigate("/collection")}
 					className="mt-6 text-sm text-white/40 hover:text-white/60"
 				>
-					My Collection
+					{t("collection.title")}
 				</button>
 			</motion.div>
 

@@ -9,6 +9,8 @@ import { HandCursor } from "../components/HandCursor";
 import { useHandGesture } from "../hooks/useHandGesture";
 import { deleteCard, getCards, type MusicCard, toggleFavorite } from "../lib/cardStorage";
 import type { GestureResult } from "../lib/gestureDetector";
+import { getPlayableUrl } from "../lib/api";
+import { useI18n } from "../lib/i18n";
 import { useGestureStore } from "../stores/gestureStore";
 
 const SWIPE_THRESHOLD = 50;
@@ -44,11 +46,14 @@ export default function CollectionPage() {
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [[direction], setDirection] = useState([0]);
 	const [playingId, setPlayingId] = useState<string | null>(null);
+	const [loadingId, setLoadingId] = useState<string | null>(null);
+	const [playErrorId, setPlayErrorId] = useState<string | null>(null);
 	const audioRef = useRef<HTMLAudioElement>(null);
 	const videoRef = useRef<HTMLVideoElement>(null);
 
 	// Gesture state
 	const { gestureEnabled, toggleGesture } = useGestureStore();
+	const { t } = useI18n();
 	const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
 	const [currentGesture, setCurrentGesture] = useState<GestureResult["gesture"]>("none");
 	const [gestureVelocity, setGestureVelocity] = useState(0);
@@ -91,16 +96,30 @@ export default function CollectionPage() {
 		(card: MusicCard) => {
 			const audio = audioRef.current;
 			if (!audio) return;
+			// 同一张卡片: 切为暂停
 			if (playingId === card.id) {
 				audio.pause();
 				setPlayingId(null);
-			} else {
-				audio.src = card.audioUrl;
-				audio.play();
-				setPlayingId(card.id);
+				return;
 			}
+			if (loadingId === card.id) return; // 正在取链接, 防连击
+			setPlayErrorId(null);
+			setLoadingId(card.id);
+			// vkey 有时效, 现取新鲜播放链接 (不再用本地缓存里会过期的 audioUrl); fire-and-forget
+			getPlayableUrl(card.musicId)
+				.then(async (freshUrl) => {
+					audio.src = freshUrl;
+					await audio.play();
+					setPlayingId(card.id);
+				})
+				.catch((e) => {
+					console.warn("play failed", e);
+					setPlayErrorId(card.id);
+					setPlayingId(null);
+				})
+				.finally(() => setLoadingId(null));
 		},
-		[playingId],
+		[playingId, loadingId],
 	);
 
 	const handleToggleFavorite = useCallback(
@@ -388,14 +407,16 @@ export default function CollectionPage() {
 
 					<div className="px-5 pt-3 pb-2">
 						{card && (
+							<>
 							<div className="flex items-center justify-center gap-4">
 								<motion.button
 									type="button"
 									whileTap={{ scale: 0.85 }}
 									onClick={() => handlePlay(card)}
-									className="flex h-12 w-12 items-center justify-center rounded-full bg-neon-cyan/20 text-lg text-neon-cyan ring-1 ring-neon-cyan/30"
+									disabled={loadingId === card.id}
+									className="flex h-12 w-12 items-center justify-center rounded-full bg-neon-cyan/20 text-lg text-neon-cyan ring-1 ring-neon-cyan/30 disabled:opacity-50"
 								>
-									{playingId === card.id ? "\u23F8" : "\u25B6"}
+									{loadingId === card.id ? "\u23F3" : playingId === card.id ? "\u23F8" : "\u25B6"}
 								</motion.button>
 								<motion.button
 									type="button"
@@ -418,6 +439,10 @@ export default function CollectionPage() {
 									&#x2715;
 								</motion.button>
 							</div>
+							{playErrorId === card.id && (
+								<p className="mt-1 text-center text-xs text-red-400/80">暂时没法播放，稍后再试</p>
+							)}
+							</>
 						)}
 
 						{cards.length > 1 && (

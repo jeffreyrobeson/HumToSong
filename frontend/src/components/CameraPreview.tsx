@@ -2,10 +2,11 @@ import { forwardRef, useEffect, useRef } from "react";
 
 interface CameraPreviewProps {
 	enabled: boolean;
+	onError?: (message: string) => void;
 }
 
 export const CameraPreview = forwardRef<HTMLVideoElement, CameraPreviewProps>(
-	function CameraPreview({ enabled }, ref) {
+	function CameraPreview({ enabled, onError }, ref) {
 		const internalRef = useRef<HTMLVideoElement>(null);
 		const videoRef = (ref as React.RefObject<HTMLVideoElement>) ?? internalRef;
 		const streamRef = useRef<MediaStream | null>(null);
@@ -34,8 +35,10 @@ export const CameraPreview = forwardRef<HTMLVideoElement, CameraPreviewProps>(
 					if (videoRef.current) {
 						videoRef.current.srcObject = stream;
 					}
-				} catch {
-					// Camera permission denied - fail silently
+				} catch (e) {
+					const message = e instanceof Error ? e.message : "无法访问摄像头";
+					console.error("[CameraPreview] getUserMedia failed:", message);
+					onError?.(message);
 				}
 			}
 
@@ -48,7 +51,7 @@ export const CameraPreview = forwardRef<HTMLVideoElement, CameraPreviewProps>(
 					streamRef.current = null;
 				}
 			};
-		}, [enabled, videoRef]);
+		}, [enabled, videoRef, onError]);
 
 		if (!enabled) return null;
 

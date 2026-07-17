@@ -91,17 +91,26 @@ export function useHandGesture({
 				const filesetResolver = await vision.FilesetResolver.forVisionTasks(WASM_CDN);
 				if (cancelled) return;
 
-				const handLandmarker = await vision.HandLandmarker.createFromOptions(filesetResolver, {
-					baseOptions: {
-						modelAssetPath:
-							"https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task",
-						delegate: "GPU",
-					},
-					runningMode: "VIDEO",
-					numHands: 1,
-					minHandDetectionConfidence: 0.7,
-					minTrackingConfidence: 0.7,
-				});
+				// GPU delegate 在 iOS Safari 等环境常初始化失败或无结果；
+				// 先试 GPU，失败再降 CPU，保证移动端可用。
+				const modelAssetPath =
+					"https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task";
+
+				const createLandmarker = (delegate: "GPU" | "CPU") =>
+					vision.HandLandmarker.createFromOptions(filesetResolver, {
+						baseOptions: { modelAssetPath, delegate },
+						runningMode: "VIDEO",
+						numHands: 1,
+						minHandDetectionConfidence: 0.7,
+						minTrackingConfidence: 0.7,
+					});
+
+				let handLandmarker: Awaited<ReturnType<typeof createLandmarker>>;
+				try {
+					handLandmarker = await createLandmarker("GPU");
+				} catch {
+					handLandmarker = await createLandmarker("CPU");
+				}
 				if (cancelled) return;
 
 				handLandmarkerRef.current = handLandmarker as unknown as typeof handLandmarkerRef.current;

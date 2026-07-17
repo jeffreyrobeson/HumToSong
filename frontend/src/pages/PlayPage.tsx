@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useCallback, useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { analyzeEmotion } from "../lib/emotionAnalyzer";
+import { useI18n } from "../lib/i18n";
 import { playMaterialSound } from "../lib/soundEngine";
 import { useAppStore } from "../stores/appStore";
 
@@ -17,6 +18,7 @@ const EMOTION_EMOJI: Record<string, string> = {
 
 export default function PlayPage() {
 	const navigate = useNavigate();
+	const { t } = useI18n();
 	const [searchParams] = useSearchParams();
 	const isCollab = searchParams.get("collab") !== null;
 	const { objects, tapTimestamps, emotion, addTap, setEmotion } = useAppStore();
@@ -51,8 +53,8 @@ export default function PlayPage() {
 
 	return (
 		<div className="flex min-h-dvh flex-col items-center bg-bg-dark px-4 pt-10">
-			<h2 className="mb-2 text-xl font-semibold text-white/80">Tap to Play</h2>
-			<p className="mb-6 text-sm text-white/40">Tap the objects to express your rhythm</p>
+			<h2 className="mb-2 text-xl font-semibold text-white/80">{t("play.tapToPlay")}</h2>
+			<p className="mb-6 text-sm text-white/40">{t("play.tapHint")}</p>
 
 			{/* Object cards */}
 			<div className="mb-6 flex flex-wrap justify-center gap-3">
@@ -77,7 +79,7 @@ export default function PlayPage() {
 			{/* Tap counter and emotion display */}
 			<div className="mb-6 text-center">
 				<p className="text-sm text-white/50">
-					Taps: <span className="font-mono text-neon-cyan">{tapTimestamps.length}</span>
+					{t("play.taps")}: <span className="font-mono text-neon-cyan">{tapTimestamps.length}</span>
 				</p>
 				{emotion && (
 					<motion.div
@@ -103,7 +105,7 @@ export default function PlayPage() {
 				disabled={!emotion}
 				className="rounded-xl bg-neon-magenta/10 px-8 py-3 font-semibold text-neon-magenta ring-1 ring-neon-magenta/30 transition-all hover:bg-neon-magenta/20 disabled:opacity-30"
 			>
-				Generate Music
+				{t("play.generateMusic")}
 			</motion.button>
 
 			<button
@@ -111,7 +113,7 @@ export default function PlayPage() {
 				onClick={() => navigate("/camera")}
 				className="mt-4 text-sm text-white/40 hover:text-white/60"
 			>
-				Retake Photo
+				{t("play.retake")}
 			</button>
 		</div>
 	);

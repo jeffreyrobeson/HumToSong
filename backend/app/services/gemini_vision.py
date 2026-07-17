@@ -1,9 +1,7 @@
 import json
 import time
 
-from google import genai
-
-from app.config import settings
+from app.services import openai_client
 
 IDENTIFY_PROMPT = """
 Analyze this photo and identify 3-5 main objects that would make interesting musical elements.
@@ -32,23 +30,13 @@ Example output:
 """
 
 
-async def identify_objects(image_base64: str) -> list[dict]:
-    """Call Gemini Vision API to identify objects in an image."""
-    client = genai.Client(api_key=settings.gemini_api_key)
-
-    response = await client.aio.models.generate_content(
-        model="gemini-2.0-flash",
-        contents=[
-            IDENTIFY_PROMPT,
-            {"inline_data": {"mime_type": "image/jpeg", "data": image_base64}},
-        ],
+async def identify_objects(image_base64: str, provider_id: str) -> list[dict]:
+    """识别图片中的物体.走 OpenAI 兼容自定义供应商 (provider_id 必填)."""
+    text = await openai_client.generate_content(
+        provider_id,
+        IDENTIFY_PROMPT,
+        image_data_url=openai_client.ensure_data_url(image_base64),
     )
-
-    text = response.text.strip()
-    # Strip markdown code fences if present
-    if text.startswith("```"):
-        text = text.split("\n", 1)[1]
-        text = text.rsplit("```", 1)[0].strip()
 
     objects = json.loads(text)
 

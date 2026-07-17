@@ -5,15 +5,24 @@ import AudioVisualizer from "../components/AudioVisualizer";
 import { generateDescription, matchMusic } from "../lib/api";
 import { saveCard } from "../lib/cardStorage";
 import { addLayer, createRoom, getOrCreateUserId, getOrCreateUserName } from "../lib/collaboration";
+import { useI18n } from "../lib/i18n";
 import { useAppStore } from "../stores/appStore";
+import {
+	translateGenre,
+	translateTag,
+	translateEmotion,
+	translateDescription,
+} from "../lib/translations";
 
 export default function ResultPage() {
 	const navigate = useNavigate();
+	const { t, lang } = useI18n();
 	const [searchParams] = useSearchParams();
 	const audioRef = useRef<HTMLAudioElement>(null);
 	const [playing, setPlaying] = useState(false);
 	const [loadingStep, setLoadingStep] = useState<string | null>(null);
 	const [saved, setSaved] = useState(false);
+	const [showTranslate, setShowTranslate] = useState(lang === "zh");
 
 	const {
 		objects,
@@ -24,6 +33,7 @@ export default function ResultPage() {
 		isCollabMode,
 		roomCode,
 		tapTimestamps,
+		providerId,
 		setMusicDescription,
 		setMatchResult,
 		setLoading,
@@ -44,16 +54,16 @@ export default function ResultPage() {
 		const run = async () => {
 			setLoading(true);
 			try {
-				setLoadingStep("Generating music description...");
-				const desc = await generateDescription(objects, emotion);
+				setLoadingStep(t("play.generating"));
+				const desc = await generateDescription(objects, emotion, t("common.describeError"), providerId ?? undefined);
 				setMusicDescription(desc);
 
-				setLoadingStep("Matching music...");
-				const result = await matchMusic(desc, emotion, objects);
+				setLoadingStep(t("play.matching"));
+				const result = await matchMusic(desc, emotion, objects, t("common.matchError"), providerId ?? undefined);
 				setMatchResult(result);
 			} catch (e) {
 				console.error("Pipeline error:", e);
-				setLoadingStep(`Error: ${e instanceof Error ? e.message : "Unknown error"}`);
+				setLoadingStep(t("common.busy"));
 			} finally {
 				setLoading(false);
 			}
@@ -150,7 +160,7 @@ export default function ResultPage() {
 					}}
 					className="mb-4 h-8 w-8 rounded-full border-2 border-neon-cyan border-t-transparent"
 				/>
-				<p className="text-sm text-white/60">{loadingStep ?? "Processing..."}</p>
+				<p className="text-sm text-white/60">{loadingStep ?? t("play.processing")}</p>
 			</div>
 		);
 	}
@@ -162,21 +172,37 @@ export default function ResultPage() {
 				animate={{ opacity: 1, y: 0 }}
 				className="w-full max-w-md"
 			>
-				<h2 className="mb-6 text-center text-xl font-semibold text-white/80">Your Music</h2>
+				<h2 className="mb-6 text-center text-xl font-semibold text-white/80">
+					{t("result.yourMusic")}
+				</h2>
 
 				{/* Music info card */}
 				<div className="mb-6 rounded-2xl bg-bg-card p-6 ring-1 ring-white/10">
+					{/* 翻译开关 */}
+					<div className="mb-3 flex items-center justify-end">
+						<button
+							type="button"
+							onClick={() => setShowTranslate(!showTranslate)}
+							className="rounded-full bg-white/5 px-3 py-1 text-xs text-white/60 hover:bg-white/10"
+						>
+							{showTranslate ? t("result.showOriginal") : t("result.showChinese")}
+						</button>
+					</div>
 					{musicDescription && (
 						<>
-							<p className="mb-1 text-lg font-semibold text-neon-cyan">{musicDescription.genre}</p>
-							<p className="mb-3 text-sm text-white/50">{musicDescription.description}</p>
+							<p className="mb-1 text-lg font-semibold text-neon-cyan">
+								{showTranslate ? translateGenre(musicDescription.genre) : musicDescription.genre}
+							</p>
+							<p className="mb-3 text-sm text-white/50">
+								{showTranslate ? translateDescription(musicDescription.description) : musicDescription.description}
+							</p>
 							<div className="mb-3 flex flex-wrap gap-2">
 								{musicDescription.matching_tags.map((tag) => (
 									<span
 										key={tag}
 										className="rounded-full bg-white/5 px-3 py-1 text-xs text-white/60"
 									>
-										#{tag}
+										#{showTranslate ? translateTag(tag) : tag}
 									</span>
 								))}
 							</div>
@@ -188,31 +214,35 @@ export default function ResultPage() {
 							<p className="font-mono text-lg text-neon-magenta">
 								{Math.round(matchResult.confidence * 10000) / 100}%
 							</p>
-							<p>Confidence</p>
+							<p>{t("play.confidence")}</p>
 						</div>
 						<div>
 							<p className="font-mono text-lg text-neon-yellow">{musicDescription?.tempo ?? "?"}</p>
-							<p>BPM</p>
+							<p>{t("play.bpm")}</p>
 						</div>
 						<div>
-							<p className="font-mono text-lg text-neon-cyan">{emotion?.emotion ?? "?"}</p>
-							<p>Mood</p>
+							<p className="font-mono text-lg text-neon-cyan">
+								{showTranslate ? translateEmotion(emotion?.emotion ?? "?") : emotion?.emotion ?? "?"}
+							</p>
+							<p>{t("play.mood")}</p>
 						</div>
 					</div>
 
-					<p className="text-xs text-white/30">{matchResult.reasoning}</p>
+					<p className="text-xs text-white/30">
+						{showTranslate ? translateDescription(matchResult.reasoning) : matchResult.reasoning}
+					</p>
 
 					{/* Gemini creative reason */}
 					{matchResult.creative_reason && (
 						<p className="mt-3 border-t border-white/5 pt-3 text-sm leading-relaxed text-neon-cyan/70 italic">
-							{matchResult.creative_reason}
+							{showTranslate ? translateDescription(matchResult.creative_reason) : matchResult.creative_reason}
 						</p>
 					)}
 
 					{/* Poetic story */}
 					{matchResult.story && (
 						<p className="mt-3 border-t border-white/5 pt-3 text-sm leading-relaxed text-white/60">
-							{matchResult.story}
+							{showTranslate ? translateDescription(matchResult.story) : matchResult.story}
 						</p>
 					)}
 				</div>
@@ -240,14 +270,14 @@ export default function ResultPage() {
 							disabled={saved}
 							className="rounded-lg bg-neon-yellow/10 px-5 py-2 text-sm font-medium text-neon-yellow ring-1 ring-neon-yellow/30 transition-all hover:bg-neon-yellow/20 disabled:opacity-50"
 						>
-							{saved ? "Saved!" : "Save to Collection"}
+							{saved ? t("result.saved") : t("result.save")}
 						</button>
 						<button
 							type="button"
 							onClick={handleInviteFriends}
 							className="rounded-lg bg-neon-magenta/10 px-5 py-2 text-sm font-medium text-neon-magenta ring-1 ring-neon-magenta/30 transition-all hover:bg-neon-magenta/20"
 						>
-							Invite Friends
+							{t("result.invite")}
 						</button>
 					</div>
 
@@ -260,14 +290,14 @@ export default function ResultPage() {
 							}}
 							className="rounded-lg bg-white/5 px-5 py-2 text-sm text-white/60 hover:bg-white/10"
 						>
-							Regenerate
+							{t("result.regenerate")}
 						</button>
 						<button
 							type="button"
 							onClick={() => navigate("/")}
 							className="rounded-lg bg-white/5 px-5 py-2 text-sm text-white/60 hover:bg-white/10"
 						>
-							New Session
+							{t("result.newSession")}
 						</button>
 					</div>
 				</div>

@@ -5,8 +5,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-from app.api import describe, identify, match
+from app.api import admin, describe, identify, match
 from app.config import settings
+from app.services import admin as admin_service
+from app.services import db
 
 app = FastAPI(title="LLL API", version="0.1.0", description="Life Live Loop - AI Music Creation")
 
@@ -18,9 +20,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(admin.router, prefix="/api", tags=["admin"])
 app.include_router(identify.router, prefix="/api", tags=["identify"])
 app.include_router(describe.router, prefix="/api", tags=["describe"])
 app.include_router(match.router, prefix="/api", tags=["match"])
+
+# 首次启动建供应商/key 表, 并把 .env 的明文管理密码迁移进 DB
+db.init_db()
+admin_service.seed_admin_password_from_env()
 
 
 @app.get("/health")

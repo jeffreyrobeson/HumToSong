@@ -13,6 +13,7 @@ class IdentifiedObject(BaseModel):
 
 class IdentifyRequest(BaseModel):
     image: str = Field(description="Base64-encoded image data")
+    provider_id: str
 
 
 class IdentifyResponse(BaseModel):

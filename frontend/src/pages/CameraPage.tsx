@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useCallback, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { identifyObjects } from "../lib/api";
+import { useI18n } from "../lib/i18n";
 import { useAppStore } from "../stores/appStore";
 
 export default function CameraPage() {
@@ -13,21 +14,42 @@ export default function CameraPage() {
 	const [streaming, setStreaming] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 
-	const { setCapturedImage, setObjects, isLoading, setLoading } = useAppStore();
+	const { setCapturedImage, setObjects, isLoading, setLoading, providerId } = useAppStore();
+	const { t } = useI18n();
 
 	const startCamera = useCallback(async () => {
+		// 后摄失败(双摄/旧机/某些 webview)时，自动 fallback 到任意/前摄，
+		// 避免在香港/国内 app webview 或环境相机不可用时直接打不开。
+		const tryGetUserMedia = async (constraints: MediaStreamConstraints) =>
+			navigator.mediaDevices.getUserMedia(constraints);
+
 		try {
-			const stream = await navigator.mediaDevices.getUserMedia({
-				video: { facingMode: "environment", width: { ideal: 1280 }, height: { ideal: 720 } },
-			});
-			if (videoRef.current) {
+			let stream: MediaStream | undefined;
+			try {
+				stream = await tryGetUserMedia({
+					video: { facingMode: "environment", width: { ideal: 1280 }, height: { ideal: 720 } },
+				});
+			} catch {
+				// 后摄不可用 -> 退回默认/前置
+				stream = await tryGetUserMedia({ video: true });
+			}
+			if (videoRef.current && stream) {
 				videoRef.current.srcObject = stream;
 				setStreaming(true);
 			}
-		} catch {
-			setError("Camera access denied. Please allow camera permissions.");
+		} catch (e) {
+			const name = e instanceof DOMException ? e.name : "";
+			let msg = t("camera.failed");
+			if (name === "NotAllowedError" || name === "SecurityError") {
+				msg = t("camera.denied");
+			} else if (name === "NotFoundError" || name === "OverconstrainedError") {
+				msg = t("camera.noCamera");
+			} else if (name === "NotReadableError") {
+				msg = t("camera.busy");
+			}
+			setError(msg);
 		}
-	}, []);
+	}, [t]);
 
 	const captureAndIdentify = useCallback(async () => {
 		const video = videoRef.current;
@@ -47,19 +69,19 @@ export default function CameraPage() {
 		setLoading(true);
 
 		try {
-			const objects = await identifyObjects(base64);
+			const objects = await identifyObjects(base64, t("common.identifyError"), providerId ?? undefined);
 			setObjects(objects);
 			navigate(isCollab ? "/play?collab=1" : "/play");
 		} catch (e) {
-			setError(e instanceof Error ? e.message : "Identification failed");
+			setError(e instanceof Error && e.message === "timeout" ? t("common.timeout") : (e instanceof Error ? e.message : t("camera.identifyFailed")));
 		} finally {
 			setLoading(false);
 		}
-	}, [setCapturedImage, setObjects, setLoading, navigate, isCollab]);
+	}, [setCapturedImage, setObjects, setLoading, navigate, isCollab, t, providerId]);
 
 	return (
 		<div className="flex min-h-dvh flex-col items-center bg-bg-dark px-4 pt-12">
-			<h2 className="mb-6 text-xl font-semibold text-white/80">Capture Your Scene</h2>
+			<h2 className="mb-6 text-xl font-semibold text-white/80">{t("camera.title")}</h2>
 
 			{error && <p className="mb-4 text-sm text-error">{error}</p>}
 
@@ -79,7 +101,7 @@ export default function CameraPage() {
 							onClick={startCamera}
 							className="rounded-lg bg-neon-cyan/20 px-6 py-3 text-neon-cyan ring-1 ring-neon-cyan/40"
 						>
-							Open Camera
+							{t("camera.open")}
 						</motion.button>
 					</div>
 				)}
@@ -95,7 +117,7 @@ export default function CameraPage() {
 					disabled={isLoading}
 					className="rounded-xl bg-neon-cyan px-8 py-3 font-semibold text-bg-dark transition-opacity disabled:opacity-50"
 				>
-					{isLoading ? "Identifying..." : "Capture & Identify"}
+					{isLoading ? t("camera.identifying") : t("camera.capture")}
 				</motion.button>
 			)}
 
@@ -104,7 +126,7 @@ export default function CameraPage() {
 				onClick={() => navigate("/")}
 				className="mt-4 text-sm text-white/40 hover:text-white/60"
 			>
-				Back
+				{t("camera.back")}
 			</button>
 		</div>
 	);

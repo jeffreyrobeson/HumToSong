@@ -125,6 +125,21 @@ GEMINI_API_KEY=your_key_here
 
 ---
 
+## 🚀 Deployment / 部署运行
+
+详细说明见 [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md)。要点：
+
+- **后端**：FastAPI，生产端口 `9009`。`just dev-backend` 或 `uv run uvicorn app.main:app --host 0.0.0.0 --port 9009`。
+- **前端**：开发用 `just dev-frontend`（Vite 5173）；生产需 `cd frontend && bun run build`，再把 `frontend/dist/` 同步进 `backend/static/`——后端会自动挂载并回退到 SPA（`backend/app/main.py` 中的 `StaticFiles`）。
+- **AI 供应商**：识别/描述/匹配均走 **OpenAI 兼容**供应商（非 Gemini）。供应商与 key 通过网页**管理后台**管理，`provider_id` 对每个 AI 接口都是必填。
+  - 首次启动 `db.init_db()` 建表；若 `.env` 填了 `ADMIN_PASSWORD` 且库内无密码，会自动哈希迁移入库。
+  - 管理后台公开接口 `POST /api/admin/login`（校验密码、下发签名 cookie）；登录后可增删供应商与 key。
+  - 普通用户经 `GET /api/providers`（脱敏）读取可选供应商下拉。
+- **环境变量**（见 `.env.example`）：`ADMIN_PASSWORD`、`ADMIN_SESSION_SECRET`（生产务必改）、`MUSIC_BASE_URL`、`ALLOWED_ORIGINS`，以及可选的 `MODEL` / `QQ_MUSIC_API_KEY`。
+- **⚠️ 切勿提交** `backend/data/config.db`（含管理密码哈希与 API key）与 `frontend/node_modules/`；`backend/static/` 是前端构建产物，已纳入仓库以便跳过构建直接运行。
+
+---
+
 ## Project Structure
 
 ```

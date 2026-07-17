@@ -8,9 +8,9 @@ router = APIRouter()
 
 @router.post("/identify-objects", response_model=IdentifyResponse)
 async def identify(request: IdentifyRequest) -> IdentifyResponse:
-    """Identify objects in a photo using Gemini Vision API."""
+    """Identify objects in a photo via the configured OpenAI-compatible provider."""
     try:
-        objects = await identify_objects(request.image)
+        objects = await identify_objects(request.image, request.provider_id)
         return IdentifyResponse(objects=objects)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Object identification failed: {e}") from e

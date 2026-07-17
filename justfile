@@ -6,7 +6,7 @@ dev-frontend:
 
 # Run backend dev server
 dev-backend:
-    cd backend && uv run uvicorn app.main:app --reload --port 8000
+    cd backend && uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 9009
 
 # Run both dev servers (requires two terminals, or use Docker)
 dev:

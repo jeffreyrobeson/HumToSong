@@ -33,6 +33,7 @@ class MusicDescription(BaseModel):
 class DescribeRequest(BaseModel):
     objects: list[dict]
     emotion: dict
+    provider_id: str
 
 
 class DescribeResponse(BaseModel):
@@ -43,6 +44,7 @@ class MatchRequest(BaseModel):
     gemini_description: dict
     user_emotion: dict
     user_objects: list[dict]
+    provider_id: str
 
 
 class MatchResponse(BaseModel):
@@ -64,6 +66,7 @@ class MergeLayerInput(BaseModel):
 
 class MergeRequest(BaseModel):
     layers: list[MergeLayerInput]
+    provider_id: str
 
 
 class MergeResponse(BaseModel):
