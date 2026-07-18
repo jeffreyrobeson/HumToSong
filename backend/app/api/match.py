@@ -16,7 +16,7 @@ from app.services.gemini_text import (
     rerank_matches,
 )
 from app.services.music_matcher import MusicMatcher
-from app.services import qq_music
+from app.services import meting_client, qq_music
 
 router = APIRouter()
 
@@ -81,10 +81,25 @@ async def match_music(request: MatchRequest) -> MatchResponse:
             provider_id=request.provider_id,
         )
 
-        # Step 2: 调 QQ 音乐取第 1 首的播放链接
-        song = await qq_music.get_song(msg=query, n=1)
-        if not song.get("url"):
-            raise RuntimeError(f"QQ music returned no playable url for query: {query}")
+        # Step 2: 调 QQ 音乐取第 1 首的播放链接; 失败/无 url 时回退 Meting (网易源) 兜底
+        song: dict = {}
+        source = "qq"
+        try:
+            song = await qq_music.get_song(msg=query, n=1)
+            if not song.get("url"):
+                raise RuntimeError("qq music returned no playable url")
+        except Exception as qq_err:
+            song = {}
+            if settings.meting_enabled:
+                try:
+                    song = await meting_client.get_song(query)
+                    source = "netease-fallback"
+                except Exception as meting_err:
+                    raise RuntimeError(
+                        f"qq music failed ({qq_err}); meting fallback also failed ({meting_err})"
+                    ) from meting_err
+            else:
+                raise RuntimeError(f"qq music failed ({qq_err})") from qq_err
 
         # Step 3: 生成诗意故事 (用 QQ 歌曲元数据作为 match_metadata)
         match_metadata = {
@@ -94,6 +109,7 @@ async def match_music(request: MatchRequest) -> MatchResponse:
             "duration": song["duration"],
             "cover": song["cover"],
             "query": query,
+            "source": source,
         }
         story = await generate_music_story(
             objects=request.user_objects,
@@ -122,12 +138,12 @@ import urllib.parse
 
 import httpx
 
-# 仅允许代理 QQ 音乐相关域名, 防止被滥用为开放代理
+# 仅允许代理 QQ 音乐 / 网易音乐(Meting 备用方案)相关域名, 防止被滥用为开放代理
 _ALLOWED_PROXY_HOSTS = (
     "isure6.stream.qqmusic.qq.com",
     "isure.stream.qqmusic.qq.com",
-    "isure6 Vivo.stream.qqmusic.qq.com",
     "stream.qqmusic.qq.com",
+    ".music.126.net",  # Meting 备用方案: 网易 CDN (m701/m801.music.126.net ...)
 )
 _PROXY_TIMEOUT = 60.0
 

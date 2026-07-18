@@ -1,0 +1,9 @@
+{
+  "name": "humtosong-meting-service",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@meting/core": "^1.6.1"
+  }
+}
